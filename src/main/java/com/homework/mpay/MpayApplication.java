@@ -9,5 +9,4 @@ public class MpayApplication {
     public static void main(String[] args) {
         SpringApplication.run(MpayApplication.class, args);
     }
-
 }
