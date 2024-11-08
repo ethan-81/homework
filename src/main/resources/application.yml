@@ -12,7 +12,6 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: false
     generate-ddl: true
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -45,6 +44,11 @@ spring:
         maximum-pool-size: 5
         pool-name: "read-only-pool"
         read-only: true
+  jpa:
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:data.sql
 ---
 #Test Environment
 server:
