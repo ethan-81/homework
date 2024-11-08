@@ -17,6 +17,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:data.sql
 ---
 #Local Environment
 server:
@@ -44,11 +48,6 @@ spring:
         maximum-pool-size: 5
         pool-name: "read-only-pool"
         read-only: true
-  jpa:
-    defer-datasource-initialization: true
-  sql:
-    init:
-      data-locations: classpath:data.sql
 ---
 #Test Environment
 server:
