@@ -24,6 +24,14 @@ public class EarnPointService implements EarnPointUseCase {
         Account account = loadAccountPort.loadAccountByUserId(userId);
         account.earnPoint(amount, pointType);
 
-        updateAccountPort.addNewPoints(account);
+        updateAccountPort.updatePoints(account);
+    }
+
+    @Override
+    public void cancelEarnPoint(String userId, String pointId) {
+        Account account = loadAccountPort.loadAccountByUserId(userId);
+        account.cancelEarnPoint(pointId);
+
+        updateAccountPort.updatePoints(account);
     }
 }

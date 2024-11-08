@@ -4,10 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
-
 import com.homework.mpay.common.exception.ErrorConstant;
 import com.homework.mpay.common.exception.InvalidParameterException;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,7 +67,8 @@ public class AccountTest {
         InvalidParameterException exception =
                 assertThrows(InvalidParameterException.class, () -> account.earnPoint(amount, pointType));
 
-        assertEquals(ErrorConstant.EXCEED_HOLDING_POINT_AMOUNT.getErrorMessage(), exception.getErrorMessage());
+        assertEquals(
+                ErrorConstant.EXCEED_HOLDING_POINT_AMOUNT.getErrorMessage(), exception.getErrorMessage());
     }
 
     @Test
@@ -90,6 +90,7 @@ public class AccountTest {
         InvalidParameterException exception =
                 assertThrows(InvalidParameterException.class, () -> account.earnPoint(amount, pointType));
 
-        assertEquals(ErrorConstant.INVALID_EARN_POINT_AMOUNT.getErrorMessage(), exception.getErrorMessage());
+        assertEquals(
+                ErrorConstant.INVALID_EARN_POINT_AMOUNT.getErrorMessage(), exception.getErrorMessage());
     }
 }

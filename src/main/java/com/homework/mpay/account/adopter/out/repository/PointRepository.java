@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PointRepository extends JpaRepository<PointEntity, String> {
-    List<PointEntity> findByUserId(String userId);
+    List<PointEntity> findByUserIdAndStatusIs(String userId, String status);
 }

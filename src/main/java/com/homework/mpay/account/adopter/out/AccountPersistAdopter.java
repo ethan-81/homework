@@ -9,9 +9,9 @@ import com.homework.mpay.account.adopter.out.repository.PointTransactionReposito
 import com.homework.mpay.account.application.port.out.LoadAccountPort;
 import com.homework.mpay.account.application.port.out.UpdateAccountPort;
 import com.homework.mpay.account.domain.Account;
-import java.util.List;
-
 import com.homework.mpay.account.domain.Point;
+import com.homework.mpay.common.constant.PointStatusCode;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,21 +27,28 @@ public class AccountPersistAdopter implements LoadAccountPort, UpdateAccountPort
     @Override
     @Transactional(readOnly = true)
     public Account loadAccountByUserId(String userId) {
-        List<PointEntity> pointEntities = pointRepository.findByUserId(userId);
+        List<PointEntity> pointEntities =
+                pointRepository.findByUserIdAndStatusIs(userId, PointStatusCode.EARNED.getCode());
         return accountDaoMapper.mapToDomain(userId, pointEntities);
     }
 
     @Override
     @Transactional
-    public void addNewPoints(Account account) {
+    public void updatePoints(Account account) {
         account
                 .getPointWindow()
-                .getNewPoints()
+                .getUpdatedPoints()
                 .forEach(
                         point -> {
                             PointEntity savedPointEntity = savePointEntity(point, account.getUserId());
-                            PointTransactionEntity savedPointTransactionEntity = savePointTransactionEntity(account.getUserId(), point.getTransactionTypeCode().getCode(), point.getEarnedAmount());
-                            savePointLedgerEntity(savedPointEntity.getPointId(), savedPointTransactionEntity.getPointTransactionId());
+                            PointTransactionEntity savedPointTransactionEntity =
+                                    savePointTransactionEntity(
+                                            account.getUserId(),
+                                            point.getTransactionTypeCode().getCode(),
+                                            point.getEarnedAmount());
+                            savePointLedgerEntity(
+                                    savedPointEntity.getPointId(),
+                                    savedPointTransactionEntity.getPointTransactionId());
                         });
     }
 
@@ -49,18 +56,21 @@ public class AccountPersistAdopter implements LoadAccountPort, UpdateAccountPort
         return pointRepository.save(accountDaoMapper.mapToPointEntity(point, userId));
     }
 
-    public PointTransactionEntity savePointTransactionEntity(String userId, String transactionTypeCode, int amount) {
-        return pointTransactionRepository.save(PointTransactionEntity.builder()
-                .userId(userId)
-                .transactionType(transactionTypeCode)
-                .amount(amount)
-                .build());
+    public PointTransactionEntity savePointTransactionEntity(
+            String userId, String transactionTypeCode, int amount) {
+        return pointTransactionRepository.save(
+                PointTransactionEntity.builder()
+                        .userId(userId)
+                        .transactionType(transactionTypeCode)
+                        .amount(amount)
+                        .build());
     }
 
     public PointLedgerEntity savePointLedgerEntity(String pointId, String pointTransactionId) {
-        return pointLedgerRepository.save(PointLedgerEntity.builder()
-                .pointId(pointId)
-                .pointTransactionId(pointTransactionId)
-                .build());
+        return pointLedgerRepository.save(
+                PointLedgerEntity.builder()
+                        .pointId(pointId)
+                        .pointTransactionId(pointTransactionId)
+                        .build());
     }
 }

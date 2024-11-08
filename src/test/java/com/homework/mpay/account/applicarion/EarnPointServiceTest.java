@@ -1,5 +1,8 @@
 package com.homework.mpay.account.applicarion;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.*;
+
 import com.homework.mpay.account.application.port.out.LoadAccountPort;
 import com.homework.mpay.account.application.port.out.LoadPointTypePort;
 import com.homework.mpay.account.application.port.out.UpdateAccountPort;
@@ -14,19 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 public class EarnPointServiceTest {
-    @Mock
-    private LoadAccountPort loadAccountPort;
-    @Mock
-    private UpdateAccountPort updateAccountPort;
-    @Mock
-    private LoadPointTypePort loadPointTypePort;
-    @InjectMocks
-    private EarnPointService earnPointService;
+    @Mock private LoadAccountPort loadAccountPort;
+    @Mock private UpdateAccountPort updateAccountPort;
+    @Mock private LoadPointTypePort loadPointTypePort;
+    @InjectMocks private EarnPointService earnPointService;
 
     private final String userId = "testUser";
     private final int amount = 100;
@@ -51,6 +47,6 @@ public class EarnPointServiceTest {
 
         // Then - 계정에 포인트가 추가되고 업데이트 포트가 호출됨
         verify(mockAccount, times(1)).earnPoint(amount, mockPointType);
-        verify(updateAccountPort, times(1)).addNewPoints(mockAccount);
+        verify(updateAccountPort, times(1)).updatePoints(mockAccount);
     }
 }

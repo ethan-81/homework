@@ -1,5 +1,6 @@
 package com.homework.mpay.account.adopter.in;
 
+import com.homework.mpay.account.adopter.in.dto.CancelEarnPointRequest;
 import com.homework.mpay.account.adopter.in.dto.EarnPointRequest;
 import com.homework.mpay.account.application.port.in.EarnPointUseCase;
 import com.homework.mpay.common.exception.ErrorResponse;
@@ -38,11 +39,28 @@ public class PointController {
                         description = "알수 없는 오류 발생",
                         content = {@Content(schema = @Schema(implementation = ErrorResponse.class))})
             })
-    ResponseEntity<Void> postEarnPoint(@Valid @RequestBody EarnPointRequest earnPointRequest) {
+    ResponseEntity<Void> postEarnPoint(@Valid @RequestBody EarnPointRequest request) {
         earnPointUseCase.earnPoint(
-                earnPointRequest.getUserId(),
-                earnPointRequest.getAmount(),
-                earnPointRequest.getPointTypeCode());
+                request.getUserId(), request.getAmount(), request.getPointTypeCode());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping(path = "homework/point/earn/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "포인트 적립 취소", description = "특정 계좌의 특정 포인트를 적립 취소하는 API 입니다.")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "적립 취소 완료"),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "유효하지 않은 요청 정보",
+                        content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "알수 없는 오류 발생",
+                        content = {@Content(schema = @Schema(implementation = ErrorResponse.class))})
+            })
+    ResponseEntity<Void> deleteEarnPoint(@Valid @RequestBody CancelEarnPointRequest request) {
+        earnPointUseCase.cancelEarnPoint(request.getUserId(), request.getPointId());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -33,6 +33,9 @@ public class PointResponse {
     @Schema(description = "포인트 유형 이름")
     private final String pointTypeName;
 
+    @Schema(description = "포인트 상태 코드")
+    private final String statusCode;
+
     @Schema(description = "적립 일시")
     private final LocalDateTime earnedAt;
 

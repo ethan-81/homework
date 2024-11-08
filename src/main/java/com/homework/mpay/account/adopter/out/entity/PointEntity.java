@@ -54,6 +54,9 @@ public class PointEntity {
     @Column(nullable = false)
     private final LocalDate expireDate;
 
+    @Column(nullable = false)
+    private final String status;
+
     @CreationTimestamp
     @Column(nullable = false)
     private final LocalDateTime earnedAt;

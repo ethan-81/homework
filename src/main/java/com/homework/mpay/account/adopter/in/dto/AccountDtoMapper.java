@@ -23,6 +23,7 @@ public class AccountDtoMapper {
                 .expireDate(point.getExpireDate())
                 .pointTypeCode(point.getPointTypeCode())
                 .pointTypeName(point.getPointTypeName())
+                .statusCode(point.getStatus().getCode())
                 .earnedAt(point.getEarnedAt())
                 .modifiedAt(point.getModifiedAt())
                 .build();

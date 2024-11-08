@@ -28,4 +28,19 @@ public class Account {
 
         this.pointWindow.addPoint(Point.createNewPoint(amount, pointType));
     }
+
+    public void cancelEarnPoint(String pointId) {
+        Point targetPoint =
+                this.pointWindow
+                        .findPointByPointId(pointId)
+                        .orElseThrow(
+                                () -> new InvalidParameterException(ErrorConstant.NOT_EXIST_CANCELABLE_POINT));
+
+        if (targetPoint.isNotCancelable()) {
+            throw new InvalidParameterException(ErrorConstant.IS_NOT_CANCELABLE);
+        }
+
+        Point canceledPoint = targetPoint.cancelEarn();
+        this.pointWindow.updatePoint(canceledPoint);
+    }
 }

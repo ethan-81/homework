@@ -1,5 +1,6 @@
 package com.homework.mpay.account.domain;
 
+import com.homework.mpay.common.constant.PointStatusCode;
 import com.homework.mpay.common.constant.TransactionTypeCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode
 public class Point {
     private final String pointId;
@@ -20,6 +21,7 @@ public class Point {
     private final String pointTypeCode;
     private final String pointTypeName;
     private final TransactionTypeCode transactionTypeCode;
+    private final PointStatusCode status;
     private final LocalDateTime earnedAt;
     private final LocalDateTime modifiedAt;
 
@@ -32,7 +34,20 @@ public class Point {
                 .pointTypeId(pointType.getPointTypeId())
                 .pointTypeCode(pointType.getCode())
                 .pointTypeName(pointType.getName())
+                .status(PointStatusCode.EARNED)
                 .transactionTypeCode(TransactionTypeCode.EARN)
+                .build();
+    }
+
+    public boolean isNotCancelable() {
+        return this.earnedAmount != this.availableAmount;
+    }
+
+    public Point cancelEarn() {
+        return this.toBuilder()
+                .availableAmount(0)
+                .status(PointStatusCode.CANCELED)
+                .transactionTypeCode(TransactionTypeCode.EARN_CANCEL)
                 .build();
     }
 }
