@@ -15,6 +15,7 @@ public class PointTypeDaoMapper {
                 .minEarnAmount(pointTypeEntity.getMinEarnAmount())
                 .maxHoldingAmount(pointTypeEntity.getMaxHoldingAmount())
                 .validDay(pointTypeEntity.getValidDay())
+                .usePriority(pointTypeEntity.getUsePriority())
                 .build();
     }
 }

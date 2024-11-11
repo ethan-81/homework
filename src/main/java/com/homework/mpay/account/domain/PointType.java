@@ -16,6 +16,7 @@ public class PointType {
     private final int minEarnAmount;
     private final int maxHoldingAmount;
     private final int validDay;
+    private final int usePriority;
 
     public boolean isExceedMaxHoldingAmount(int amount) {
         return this.maxHoldingAmount < amount;

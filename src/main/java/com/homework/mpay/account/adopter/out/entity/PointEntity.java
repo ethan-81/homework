@@ -37,12 +37,6 @@ public class PointEntity {
     private final long pointTypeId;
 
     @Column(nullable = false)
-    private final String pointTypeCode;
-
-    @Column(nullable = false)
-    private final String pointTypeName;
-
-    @Column(nullable = false)
     private final int earnedAmount;
 
     @Column(nullable = false)

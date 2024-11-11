@@ -17,15 +17,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true)
 @Builder
-@Table(name = "point_ledger")
-public class PointLedgerEntity {
+@Table(name = "point_use_ledger")
+public class PointUseLedgerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pointLedgerId;
-
-    @Column(nullable = false)
-    private final String pointId;
+    private Long pointUseLedgerId;
 
     @Column(nullable = false)
     private final String pointTransactionId;
+
+    @Column(nullable = false)
+    private final String orderId;
 }

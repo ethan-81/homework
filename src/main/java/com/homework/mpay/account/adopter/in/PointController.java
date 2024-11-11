@@ -2,7 +2,9 @@ package com.homework.mpay.account.adopter.in;
 
 import com.homework.mpay.account.adopter.in.dto.CancelEarnPointRequest;
 import com.homework.mpay.account.adopter.in.dto.EarnPointRequest;
+import com.homework.mpay.account.adopter.in.dto.UsePointRequest;
 import com.homework.mpay.account.application.port.in.EarnPointUseCase;
+import com.homework.mpay.account.application.port.in.UsePointUseCase;
 import com.homework.mpay.common.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "포인트", description = "포인트 거래 API")
 public class PointController {
     private final EarnPointUseCase earnPointUseCase;
+    private final UsePointUseCase usePointUseCase;
 
     @PostMapping(path = "homework/point/earn", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "포인트 적립", description = "특정 계좌에 포인트를 적립하는 API 입니다.")
@@ -61,6 +64,44 @@ public class PointController {
             })
     ResponseEntity<Void> deleteEarnPoint(@Valid @RequestBody CancelEarnPointRequest request) {
         earnPointUseCase.cancelEarnPoint(request.getUserId(), request.getPointId());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping(path = "homework/point/use", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "포인트 사용", description = "주문에 의한 포인트 사용 API 입니다.")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "사용 완료"),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "유효하지 않은 요청 정보",
+                        content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "알수 없는 오류 발생",
+                        content = {@Content(schema = @Schema(implementation = ErrorResponse.class))})
+            })
+    ResponseEntity<Void> postUsePoint(@Valid @RequestBody UsePointRequest request) {
+        usePointUseCase.usePoint(request.getUserId(), request.getAmount(), request.getOrderId());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping(path = "homework/point/use/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "포인트 사용 취소", description = "특정 주문에 대한 포인트 사용 취소 API 입니다.")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "사용 취소 완료"),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "유효하지 않은 요청 정보",
+                        content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "알수 없는 오류 발생",
+                        content = {@Content(schema = @Schema(implementation = ErrorResponse.class))})
+            })
+    ResponseEntity<Void> deleteUsePoint(@Valid @RequestBody UsePointRequest request) {
+        usePointUseCase.useCancelPoint(request.getUserId(), request.getAmount(), request.getOrderId());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

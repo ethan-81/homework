@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 public enum PointTypeCode {
     FREE_POINT("FREE_POINT", "무료 포인트"),
-    MANUAL_POINT("MANUAL_POINT", "수기 지급 포인트");
+    MANUAL_POINT("MANUAL_POINT", "수기 지급 포인트"),
+    ALTERNATIVE_POINT("ALTERNATIVE_POINT", "사용 취소 대체 지급 포인트");
 
     private final String code;
     private final String description;

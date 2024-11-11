@@ -1,11 +1,11 @@
 package com.homework.mpay.account.adopter.out;
 
 import com.homework.mpay.account.adopter.out.entity.PointEntity;
+import com.homework.mpay.account.adopter.out.entity.PointProjection;
 import com.homework.mpay.account.domain.Account;
 import com.homework.mpay.account.domain.Point;
 import com.homework.mpay.account.domain.PointWindow;
 import com.homework.mpay.common.constant.PointStatusCode;
-import com.homework.mpay.common.constant.TransactionTypeCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AccountDaoMapper {
-    Account mapToDomain(String userId, List<PointEntity> pointEntities) {
+    public Account mapToDomain(String userId, List<PointProjection> pointEntities) {
         return Account.builder().userId(userId).pointWindow(mapToPointWindow(pointEntities)).build();
     }
 
-    PointWindow mapToPointWindow(List<PointEntity> pointEntities) {
+    public PointWindow mapToPointWindow(List<PointProjection> pointEntities) {
         List<Point> points =
                 pointEntities.stream()
                         .map(this::mapToPoint)
@@ -26,29 +26,28 @@ public class AccountDaoMapper {
         return PointWindow.builder().points(points).build();
     }
 
-    Point mapToPoint(PointEntity entity) {
+    public Point mapToPoint(PointProjection entity) {
         return Point.builder()
                 .pointId(entity.getPointId())
                 .earnedAmount(entity.getEarnedAmount())
                 .availableAmount(entity.getAvailableAmount())
+                .expiredAmount(entity.getExpiredAmount())
                 .expireDate(entity.getExpireDate())
+                .status(PointStatusCode.findByCode(entity.getStatus()))
+                .earnedAt(entity.getEarnedAt())
+                .modifiedAt(entity.getModifiedAt())
                 .pointTypeId(entity.getPointTypeId())
                 .pointTypeCode(entity.getPointTypeCode())
                 .pointTypeName(entity.getPointTypeName())
-                .status(PointStatusCode.findByCode(entity.getStatus()))
-                .transactionTypeCode(TransactionTypeCode.NONE)
-                .earnedAt(entity.getEarnedAt())
-                .modifiedAt(entity.getModifiedAt())
+                .usePriority(entity.getUsePriority())
                 .build();
     }
 
-    PointEntity mapToPointEntity(Point point, String userId) {
+    public PointEntity mapToPointEntity(Point point, String userId) {
         return PointEntity.builder()
                 .pointId(point.getPointId() == null ? null : point.getPointId())
                 .userId(userId)
                 .pointTypeId(point.getPointTypeId())
-                .pointTypeCode(point.getPointTypeCode())
-                .pointTypeName(point.getPointTypeName())
                 .earnedAmount(point.getEarnedAmount())
                 .availableAmount(point.getAvailableAmount())
                 .expiredAmount(point.getExpiredAmount())

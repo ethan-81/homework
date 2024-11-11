@@ -17,33 +17,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true)
 @Builder
-@Table(name = "point_type")
-public class PointTypeEntity {
+@Table(name = "point_transaction_ledger")
+public class PointTransactionLedgerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final long pointTypeId;
+    private Long pointLedgerId;
 
     @Column(nullable = false)
-    private final String code;
+    private final String pointTransactionId;
 
     @Column(nullable = false)
-    private final String name;
+    private final String pointId;
 
     @Column(nullable = false)
-    private final int maxEarnAmount;
+    private final String originPointId;
 
     @Column(nullable = false)
-    private final int minEarnAmount;
+    private final int transactionAmount;
 
     @Column(nullable = false)
-    private final int maxHoldingAmount;
-
-    @Column(nullable = false)
-    private final int validDay;
-
-    @Column(nullable = false)
-    private final int usePriority;
-
-    @Column(nullable = false)
-    private final boolean active;
+    private final String actionTypeCode;
 }
