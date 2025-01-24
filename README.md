@@ -161,7 +161,4 @@
 ```SHELL
 프로젝트 루트> ./gradlew build
 프로젝트 루트> ./gradlew bootRun
-
-또는 
-첨부 파일 저장 위치 > java -jar mpay-0.0.1-SNAPSHOT.jar
 ```
